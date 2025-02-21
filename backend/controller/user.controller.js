@@ -2,7 +2,7 @@ const userModel = require("../models/user.model");
 const { validationResult } = require('express-validator')
 
 
-exports.signUp = async(req,res)=>{
+module.exports.signUp = async(req,res)=>{
 try {
     // to display the result of the express valdiation result 
     const errors = validationResult(req);
@@ -56,7 +56,7 @@ try {
 }
 
 
-exports.login=async(req,res)=>{ 
+module.exports.login=async(req,res)=>{ 
     try {
         // check for the error through express-validator
         const errors = validationResult(req)
@@ -82,6 +82,8 @@ exports.login=async(req,res)=>{
         // compare the password
         const isMatch = await user.comparePassword(password);
 
+        const token = await user.generateAuthToken();
+
         if(!isMatch){
             return res.status(400).json({
                 success:false,
@@ -91,7 +93,9 @@ exports.login=async(req,res)=>{
 
         return res.status(200).json({
             success:true,
-            message:"Login successfull"
+            message:"Login successfull",
+            token:token,
+            userData:user
         })
 
         
