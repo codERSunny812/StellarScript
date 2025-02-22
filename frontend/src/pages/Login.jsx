@@ -26,13 +26,12 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          
           localStorage.setItem("token", data.token);
           localStorage.setItem("isLoggedIn", true);
           localStorage.setItem("user", JSON.stringify(data));
           window.location.href = "/";
         } else {
-          toast.error(data.msg);
+          toast.error(data.message);
         }
       });
   };

@@ -7,6 +7,12 @@ import { ToastContainer } from 'react-toastify';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-    <ToastContainer/>
-  </StrictMode>,
+    <ToastContainer
+    position='top-center'
+    theme='dark'
+    autoClose={3000}
+    hideProgressBar={true}
+    closeOnClick
+    />
+  </StrictMode>
 )

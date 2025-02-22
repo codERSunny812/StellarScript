@@ -1,4 +1,4 @@
-import { useEffect, useState, version } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from "../components/Navbar";
 import Select from 'react-select';
 import { api_base_url } from '../helper';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Home = () => {
+
   const [isCreateModelShow, setIsCreateModelShow] = useState(false);
   const [languageOptions, setLanguageOptions] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState(null); // State to store selected language
@@ -47,9 +48,11 @@ const Home = () => {
     }),
   };
 
+  // function to show the language dropdown 
   const getRunTimes = async () => {
     let res = await fetch("https://emkc.org/api/v2/piston/runtimes");
     let data = await res.json();
+    console.log("data is", data);
 
     // Filter only the required languages
     const filteredLanguages = [
@@ -58,7 +61,7 @@ const Home = () => {
       "c",
       "c++",
       "java",
-      "bash"
+      "go"
     ];
 
     const options = data
@@ -71,6 +74,8 @@ const Home = () => {
 
     setLanguageOptions(options);
   };
+
+  console.log("Language options:", languageOptions);
 
   const handleLanguageChange = (selectedOption) => {
     setSelectedLanguage(selectedOption); // Update selected language state
@@ -106,7 +111,7 @@ const Home = () => {
   }, []);
 
   const createProj = () => {
-    fetch(api_base_url + "/createProj", {
+    fetch(api_base_url + "/projects/create", {
       mode: "cors",
       method: "POST",
       headers: {
