@@ -13,7 +13,7 @@ const projectSchema = new mongoose.Schema({
     projectLanguage: {
         type: String,
         required: true,
-        enum: ['Python', 'JavaScript', 'Java', 'C++', 'C#', 'PHP', 'Ruby', 'HTML/CSS', 'Other']
+        enum: ['python', 'javascript', 'java', 'c++', 'c#', 'go','other']
     },
     projectCode: {
         type: String,
@@ -28,6 +28,10 @@ const projectSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    version:{
+        type:String,
+        required:true
+    }
    
 });
 

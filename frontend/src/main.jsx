@@ -13,6 +13,7 @@ createRoot(document.getElementById('root')).render(
     autoClose={3000}
     hideProgressBar={true}
     closeOnClick
+    pauseOnHover
     />
   </StrictMode>
 )

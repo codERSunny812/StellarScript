@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {body} = require('express-validator')
-const { createProject, getProjects, getProject, updateProject, deleteProject, saveProject } = require('../controller/project.controller');
+const { createProject, getProjects, getProject, editProject, deleteProject, saveProject } = require('../controller/project.controller');
 
 
 router.get('/',(req,res)=>{
@@ -20,6 +20,8 @@ router.post('/create',[
 router.post('/saveproject',saveProject)
 router.post('/getprojects',getProjects)
 router.post('/getproject',getProject)
+router.post('/updateproject',editProject)
+router.post('/deleteproject',deleteProject)
 
 
 

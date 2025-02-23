@@ -28,7 +28,7 @@ function getStartupCode(language) {
 
 module.exports.createProject = async (req, res) => {
     try {
-        const {name,description,language,code,token} = req.body;
+        const {name,description,language,code,token,version} = req.body;
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await userModel.findById({_id:decoded._id});
@@ -45,14 +45,17 @@ module.exports.createProject = async (req, res) => {
             projectDescription:description,
             projectLanguage:language,
             projectCode:getStartupCode(language),
-            createdBy:user
+            createdBy:user,
+            version:version
         })
 
 
         return res.status(200).json({
             success:true,
             message:"Project created successfully",
-            data:await project.save()
+            data:await project.save(),
+            projectId:project._id,
+            version:version
         })
 
 
@@ -171,8 +174,8 @@ exports.deleteProject = async (req, res) => {
     try {
 
         let { token, projectId } = req.body;
-        let decoded = jwt.verify(token, secret);
-        let user = await userModel.findOne({ _id: decoded.userId });
+        let decoded = jwt.verify(token, process.env.JWT_SECRET);
+        let user = await userModel.findOne({ _id: decoded._id });
 
         if (!user) {
             return res.status(404).json({
@@ -200,8 +203,8 @@ exports.editProject = async (req, res) => {
     try {
 
         let { token, projectId, name } = req.body;
-        let decoded = jwt.verify(token, secret);
-        let user = await userModel.findOne({ _id: decoded.userId });
+        let decoded = jwt.verify(token, process.env.JWT_SECRET);
+        let user = await userModel.findOne({ _id: decoded._id });
 
         if (!user) {
             return res.status(404).json({
@@ -212,7 +215,7 @@ exports.editProject = async (req, res) => {
 
         let project = await projectModel.findOne({ _id: projectId });
         if (project) {
-            project.name = name;
+            project.projectName = name;
             await project.save();
             return res.status(200).json({
                 success: true,

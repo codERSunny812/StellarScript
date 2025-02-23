@@ -13,9 +13,12 @@ const Editor = () => {
 
   const [data, setData] = useState(null);
 
+  console.log("data:",data)
+
+
   // Fetch project data on mount
   useEffect(() => {
-    fetch(`${api_base_url}/getProject`, {
+    fetch(`${api_base_url}/projects/getproject`, {
       mode: 'cors',
       method: 'POST',
       headers: {
@@ -29,7 +32,8 @@ const Editor = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setCode(data.project.code); // Set the fetched code
+          console.log("project data:",data)
+          setCode(data.project.projectCode); // Set the fetched code
           setData(data.project);
         } else {
           toast.error(data.msg);
@@ -46,7 +50,7 @@ const Editor = () => {
     const trimmedCode = code?.toString().trim(); // Ensure code is a string and trimmed
     console.log('Saving code:', trimmedCode); // Debug log
 
-    fetch(`${api_base_url}/saveProject`, {
+    fetch(`${api_base_url}/projects/saveproject`, {
       mode: 'cors',
       method: 'POST',
       headers: {
@@ -61,9 +65,9 @@ const Editor = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          toast.success(data.msg);
+          toast.success(data.message);
         } else {
-          toast.error(data.msg);
+          toast.error(data.message);
         }
       })
       .catch((err) => {
@@ -95,11 +99,11 @@ const Editor = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        language: data.projLanguage,
+        language: data.projectLanguage,
         version: data.version,
         files: [
           {
-            filename: data.name + data.projLanguage === "python" ? ".py" : data.projLanguage === "java" ? ".java" : data.projLanguage === "javascript" ? ".js" : data.projLanguage === "c" ? ".c" : data.projLanguage === "cpp" ? ".cpp" : data.projLanguage === "bash" ? ".sh" : "",
+            filename: data.projectName + data.projectLanguage === "python" ? ".py" : data.projectLanguage === "java" ? ".java" : data.projectLanguage === "javascript" ? ".js" : data.projectLanguage === "c" ? ".c" : data.projectLanguage === "cpp" ? ".cpp" : data.projectLanguage === "go" ? ".go" : "",
             content: code
           }
         ]
@@ -110,6 +114,8 @@ const Editor = () => {
       setError(data.run.code === 1 ? true : false);
     })
   }
+
+
 
   return (
     <>
