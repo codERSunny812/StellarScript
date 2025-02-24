@@ -84,7 +84,7 @@ const Home = () => {
 
   // function to get the project of a user
   const getProjects = async () => {
-    fetch(import.meta.env.VITE_API_BASE_URL + "/projects/getprojects", {
+    fetch(import.meta.env.VITE_API_BASE_URL+ "/projects/getprojects", {
       mode: "cors",
       method: "POST",
       headers: {
@@ -114,7 +114,7 @@ const Home = () => {
 
   // function to create a project
   const createProj = () => {
-    fetch(import.meta.env.VITE_API_BASE_URL + "/projects/create", {
+    fetch(import.meta.env.VITE_API_BASE_URL+ "/projects/create", {
       mode: "cors",
       method: "POST",
       headers: {
@@ -167,7 +167,7 @@ const Home = () => {
   const [editProjId, setEditProjId] = useState("");
   // function to update the project name 
   const updateProj = () => {
-    fetch(import.meta.env.VITE_API_BASE_URL + "/projects/updateproject", {
+    fetch(import.meta.env.VITE_API_BASE_URL+"/projects/updateproject", {
       mode: "cors",
       method: "POST",
       headers: {
