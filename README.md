@@ -12,7 +12,7 @@ StellarScript is an advanced coding platform that allows users to practice and e
 - **Single Project Page**: View project details and execute code.
 - **Code Editor**: A powerful editor with syntax highlighting and auto-suggestions.
 - **Language Selection**: Users can select a programming language from available runtimes.
-- **Test Cases Execution**: Users can submit their code and check against predefined test cases.
+- **Test Cases Execution**: Users can submit their code and see the output.
 - **Run Code**: Execute code using the Piston API.
 - **Logout Feature**: Users can securely log out.
 - **Protected Routes**: Ensures only authenticated users can access certain pages.
