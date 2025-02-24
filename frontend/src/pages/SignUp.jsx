@@ -1,7 +1,6 @@
 import { useState } from "react";
 import logo from "../images/logos/StellarScript.png";
 import { Link, useNavigate } from "react-router-dom";
-import { import.meta.env.VITE_API_BASE_URL } from "../helper";
 import { toast } from "react-toastify";
 
 const SignUp = () => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import logo from "../images/logos/StellarScript.png";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { import.meta.env.VITE_API_BASE_URL } from "../helper";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
