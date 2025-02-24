@@ -2,7 +2,7 @@ import { useState } from "react";
 import logo from "../images/logos/StellarScript.png";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { api_base_url } from "../helper";
+import { import.meta.env.VITE_API_BASE_URL } from "../helper";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +12,7 @@ const Login = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    fetch(api_base_url + "/users/login", {
+    fetch(import.meta.env.VITE_API_BASE_URL + "/users/login", {
       mode: "cors",
       method: "POST",
       headers: {

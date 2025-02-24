@@ -25,13 +25,23 @@ function getStartupCode(language) {
 }
 
 
+// Function to calculate similarity between two code submissions
+const calculateSimilarity = (hash1, hash2) => {
+    let matches = 0;
+    for (let i = 0; i < hash1.length; i++) {
+        if (hash1[i] === hash2[i]) matches++;
+    }
+    return (matches / hash1.length) * 100;
+};
+
+
 
 module.exports.createProject = async (req, res) => {
     try {
         const {name,description,language,code,token,version} = req.body;
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await userModel.findById({_id:decoded._id});
+        const user = req.user; // Already extracted from middleware
+
 
         if(!user){
             return res.status(400).json({
@@ -40,21 +50,28 @@ module.exports.createProject = async (req, res) => {
             })
         }
 
+        console.log(user)
+
+     
+
         const project = new projectModel({
             projectName:name,
             projectDescription:description,
             projectLanguage:language,
-            projectCode:getStartupCode(language),
+            projectCode:code || getStartupCode(language),
             createdBy:user,
             version:version
         })
+
+        await project.save()
 
 
         return res.status(200).json({
             success:true,
             message:"Project created successfully",
-            data:await project.save(),
             projectId:project._id,
+            data:project,
+            projectId: project._id,
             version:version
         })
 
@@ -69,9 +86,9 @@ module.exports.createProject = async (req, res) => {
 
 module.exports.saveProject = async(req,res)=>{
 try {
-    const {token, projectId,code} = req.body;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await userModel.findById({_id:decoded._id});
+    const { projectId,code} = req.body;
+    
+    const user = req.user;
 
     if(!user){
         return res.status(400).json({
@@ -81,7 +98,16 @@ try {
     }
 
     let project = await projectModel.findById
-    ({_id:projectId});
+    (projectId);
+
+    if (!project) {
+        return res.status(404).json({ success: false, msg: "Project not found" });
+    }
+
+    // Ensure the user owns the project
+    if (project.createdBy.toString() !== user._id.toString()) {
+        return res.status(403).json({ success: false, msg: "Unauthorized" });
+    }
 
     project.projectCode = code;
     await project.save();
@@ -104,8 +130,7 @@ module.exports.getProjects = async (req, res) => {
     try {
 
         let { token } = req.body;
-        let decoded = jwt.verify(token, process.env.JWT_SECRET);
-        let user = await userModel.findOne({ _id: decoded._id });
+        const user = req.user;
 
         if (!user) {
             return res.status(404).json({
@@ -134,8 +159,7 @@ module.exports.getProjects = async (req, res) => {
 module.exports.getProject = async (req, res) => {
     try {
         let { token, projectId } = req.body;
-        let decoded = jwt.verify(token, process.env.JWT_SECRET);
-        let user = await userModel.findOne({ _id: decoded._id});
+        const user = req.user;
 
 
         if (!user) {
@@ -174,8 +198,7 @@ exports.deleteProject = async (req, res) => {
     try {
 
         let { token, projectId } = req.body;
-        let decoded = jwt.verify(token, process.env.JWT_SECRET);
-        let user = await userModel.findOne({ _id: decoded._id });
+        const user = req.user;
 
         if (!user) {
             return res.status(404).json({
@@ -185,6 +208,15 @@ exports.deleteProject = async (req, res) => {
         }
 
         let project = await projectModel.findOneAndDelete({ _id: projectId });
+        
+        if (!project) {
+            return res.status(404).json({ success: false, msg: "Project not found" });
+        }
+        
+        if (project.createdBy.toString() !== user._id.toString()) {
+            return res.status(403).json({ success: false, msg: "Unauthorized" });
+        }
+        
 
         return res.status(200).json({
             success: true,
@@ -203,8 +235,8 @@ exports.editProject = async (req, res) => {
     try {
 
         let { token, projectId, name } = req.body;
-        let decoded = jwt.verify(token, process.env.JWT_SECRET);
-        let user = await userModel.findOne({ _id: decoded._id });
+       
+        const user = req.user;
 
         if (!user) {
             return res.status(404).json({
@@ -213,7 +245,17 @@ exports.editProject = async (req, res) => {
             });
         };
 
-        let project = await projectModel.findOne({ _id: projectId });
+        let project = await projectModel.findById(projectId );
+
+        if (!project) {
+            return res.status(404).json({ success: false, msg: "Project not found" });
+        }
+
+        if (project.createdBy.toString() !== user._id.toString()) {
+            return res.status(403).json({ success: false, msg: "Unauthorized" });
+        }
+
+
         if (project) {
             project.projectName = name;
             await project.save();

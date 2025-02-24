@@ -1,9 +1,11 @@
 # StellarScript
 
 ## Overview
+
 StellarScript is an advanced coding platform that allows users to practice and enhance their problem-solving skills by writing and executing code within a structured environment. The frontend of StellarScript is built using **React.js**, offering an interactive and user-friendly interface.
 
 ## Features
+
 - **User Authentication**: Users can sign up and log in securely.
 - **Project Management**: Users can create, edit (name only), and delete projects.
 - **Home Page**: Displays all created projects.
@@ -16,6 +18,7 @@ StellarScript is an advanced coding platform that allows users to practice and e
 - **Protected Routes**: Ensures only authenticated users can access certain pages.
 
 ## Tech Stack
+
 - **React.js** - Frontend library
 - **Tailwind CSS** - Styling framework
 - **React Router** - Client-side navigation
@@ -29,11 +32,14 @@ StellarScript is an advanced coding platform that allows users to practice and e
 ## Installation
 
 ### Prerequisites
+
 Ensure you have the following installed on your system:
+
 - Node.js (>= 16.x)
 - npm or yarn
 
 ### Steps to Install
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/codERSunny812/StellarScript.git
@@ -45,7 +51,7 @@ Ensure you have the following installed on your system:
    ```
 3. Create a `.env` file in the root directory and add your environment variables:
    ```env
-   REACT_APP_API_BASE_URL=your_backend_url
+   REACT_APP_import.meta.env.VITE_API_BASE_URL=your_backend_url
    ```
 4. Start the development server:
    ```bash
@@ -53,6 +59,7 @@ Ensure you have the following installed on your system:
    ```
 
 ## Project Structure
+
 ```
 stellarscript-frontend/
 │── public/             # Static assets
@@ -84,25 +91,30 @@ stellarscript-frontend/
 ## Implementation Steps
 
 1. **User Authentication**
+
    - Implement sign-up and login using Clerk or Firebase.
    - Protect routes to ensure only logged-in users can access them.
    - Implement logout functionality.
 
 2. **Project Management**
+
    - Implement **Create Project** feature.
    - Fetch all runtimes from API: `https://emkc.org/api/v2/piston/runtimes`.
    - Display language options (Python, JavaScript, C, C++, Java, etc.) using React Select.
    - Save project details.
 
 3. **Home Page**
+
    - Fetch all projects and display them.
    - Implement Edit (only name) and Delete features.
 
 4. **Single Project Page**
+
    - Display project details.
    - Implement code execution using API: `https://emkc.org/api/v2/piston/execute`.
 
 5. **Code Editor**
+
    - Integrate Monaco Editor for writing code.
    - Implement **Run Code** feature to execute user code.
 
@@ -110,6 +122,7 @@ stellarscript-frontend/
    - Ensure users can only access certain pages if authenticated.
 
 ## Contributing
+
 1. Fork the repository.
 2. Create a new branch:
    ```bash
@@ -126,11 +139,13 @@ stellarscript-frontend/
 5. Create a pull request.
 
 ## License
+
 This project is licensed under the **MIT License**.
 
 ## Contact
+
 For any inquiries or contributions, contact:
+
 - **Developer:** Sushil Pandey
 - **Email:** your-email@example.com
 - **GitHub:** [Your GitHub Profile](https://github.com/yourusername)
-

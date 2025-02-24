@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Select from "react-select";
-import { api_base_url } from "../helper";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -85,7 +84,7 @@ const Home = () => {
 
   // function to get the project of a user
   const getProjects = async () => {
-    fetch(api_base_url + "/projects/getprojects", {
+    fetch(import.meta.env.VITE_API_BASE_URL + "/projects/getprojects", {
       mode: "cors",
       method: "POST",
       headers: {
@@ -115,7 +114,7 @@ const Home = () => {
 
   // function to create a project
   const createProj = () => {
-    fetch(api_base_url + "/projects/create", {
+    fetch(import.meta.env.VITE_API_BASE_URL + "/projects/create", {
       mode: "cors",
       method: "POST",
       headers: {
@@ -143,7 +142,7 @@ const Home = () => {
   const deleteProject = (id) => {
     let conf = confirm("Are you sure you want to delete this project?");
     if (conf) {
-      fetch(api_base_url + "/projects/deleteproject", {
+      fetch(import.meta.env.VITE_API_BASE_URL + "/projects/deleteproject", {
         mode: "cors",
         method: "POST",
         headers: {
@@ -166,9 +165,9 @@ const Home = () => {
   };
 
   const [editProjId, setEditProjId] = useState("");
-// function to update the project name 
+  // function to update the project name 
   const updateProj = () => {
-    fetch(api_base_url + "/projects//updateproject", {
+    fetch(import.meta.env.VITE_API_BASE_URL + "/projects/updateproject", {
       mode: "cors",
       method: "POST",
       headers: {
@@ -217,98 +216,98 @@ const Home = () => {
       <div className="projects px-[100px] mt-5 pb-10">
         {projects && projects.length > 0
           ? projects.map((project, index) => {
-              return (
-                <>
-                  <div className="project w-full p-[15px] flex items-center justify-between bg-[#0f0e0e]">
-                    <div
-                      onClick={() => {
-                        navigate("/editior/" + project._id);
-                      }}
-                      className="flex w-full items-center gap-[15px]"
-                    >
-                      {project.projectLanguage === "python" ? (
-                        <>
-                          <img
-                            className="w-[130px] h-[100px] object-cover"
-                            src="https://images.ctfassets.net/em6l9zw4tzag/oVfiswjNH7DuCb7qGEBPK/b391db3a1d0d3290b96ce7f6aacb32b0/python.png"
-                            alt=""
-                          />
-                        </>
-                      ) : project.projectLanguage === "javascript" ? (
-                        <>
-                          <img
-                            className="w-[130px] h-[100px] object-cover"
-                            src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png"
-                            alt=""
-                          />
-                        </>
-                      ) : project.projectLanguage === "cpp" ? (
-                        <>
-                          <img
-                            className="w-[130px] h-[100px] object-cover"
-                            src="https://upload.wikimedia.org/wikipedia/commons/3/32/C%2B%2B_logo.png"
-                            alt=""
-                          />
-                        </>
-                      ) : project.projectLanguage === "c" ? (
-                        <>
-                          <img
-                            className="w-[130px] h-[100px] object-cover"
-                            src="https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png"
-                            alt=""
-                          />
-                        </>
-                      ) : project.projectLanguage === "java" ? (
-                        <>
-                          <img
-                            className="w-[130px] h-[100px] object-cover"
-                            src="https://static-00.iconduck.com/assets.00/java-icon-1511x2048-6ikx8301.png"
-                            alt=""
-                          />
-                        </>
-                      ) : project.projectLanguage === "go" ? (
-                        <>
-                          <img
-                            className="w-[130px] h-[100px] object-cover"
-                                      src="https://cdn.britannica.com/44/260944-050-7653AA68/go-gopher-go-programming-language-by-google.jpg"
-                            alt=""
-                          />
-                        </>
-                      ) : (
-                        ""
-                      )}
-                      <div>
-                        <h3 className="text-xl">{project.projectName}</h3>
-                        <p className="text-[14px] text-[gray]">
-                          {new Date(project.projectDate).toDateString()}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-[15px]">
-                      <button
-                        className="btnNormal bg-blue-500 transition-all hover:bg-blue-600"
-                        onClick={() => {
-                          setIsEditModelShow(true);
-                          setEditProjId(project._id);
-                          setName(project.name);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => {
-                          deleteProject(project._id);
-                        }}
-                        className="btnNormal bg-red-500 transition-all hover:bg-red-600"
-                      >
-                        Delete
-                      </button>
+            return (
+              <>
+                <div className="project w-full p-[15px] flex items-center justify-between bg-[#0f0e0e]">
+                  <div
+                    onClick={() => {
+                      navigate("/editior/" + project._id);
+                    }}
+                    className="flex w-full items-center gap-[15px]"
+                  >
+                    {project.projectLanguage === "python" ? (
+                      <>
+                        <img
+                          className="w-[130px] h-[100px] object-cover"
+                          src="https://images.ctfassets.net/em6l9zw4tzag/oVfiswjNH7DuCb7qGEBPK/b391db3a1d0d3290b96ce7f6aacb32b0/python.png"
+                          alt=""
+                        />
+                      </>
+                    ) : project.projectLanguage === "javascript" ? (
+                      <>
+                        <img
+                          className="w-[130px] h-[100px] object-cover"
+                          src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png"
+                          alt=""
+                        />
+                      </>
+                    ) : project.projectLanguage === "cpp" ? (
+                      <>
+                        <img
+                          className="w-[130px] h-[100px] object-cover"
+                          src="https://upload.wikimedia.org/wikipedia/commons/3/32/C%2B%2B_logo.png"
+                          alt=""
+                        />
+                      </>
+                    ) : project.projectLanguage === "c" ? (
+                      <>
+                        <img
+                          className="w-[130px] h-[100px] object-cover"
+                          src="https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png"
+                          alt=""
+                        />
+                      </>
+                    ) : project.projectLanguage === "java" ? (
+                      <>
+                        <img
+                          className="w-[130px] h-[100px] object-cover"
+                          src="https://static-00.iconduck.com/assets.00/java-icon-1511x2048-6ikx8301.png"
+                          alt=""
+                        />
+                      </>
+                    ) : project.projectLanguage === "go" ? (
+                      <>
+                        <img
+                          className="w-[130px] h-[100px] object-cover"
+                          src="https://cdn.britannica.com/44/260944-050-7653AA68/go-gopher-go-programming-language-by-google.jpg"
+                          alt=""
+                        />
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    <div>
+                      <h3 className="text-xl">{project.projectName}</h3>
+                      <p className="text-[14px] text-[gray]">
+                        {new Date(project.projectDate).toDateString()}
+                      </p>
                     </div>
                   </div>
-                </>
-              );
-            })
+
+                  <div className="flex items-center gap-[15px]">
+                    <button
+                      className="btnNormal bg-blue-500 transition-all hover:bg-blue-600"
+                      onClick={() => {
+                        setIsEditModelShow(true);
+                        setEditProjId(project._id);
+                        setName(project.name);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteProject(project._id);
+                      }}
+                      className="btnNormal bg-red-500 transition-all hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </>
+            );
+          })
           : "No Project Found !"}
       </div>
 

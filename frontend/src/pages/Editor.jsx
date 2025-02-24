@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Editor2 from '@monaco-editor/react';
 import { useParams } from 'react-router-dom';
-import { api_base_url } from '../helper';
 import { toast } from 'react-toastify';
 
 const Editor = () => {
-  const [code, setCode] = useState(""); // State to hold the code
-  const { id } = useParams(); // Extract project ID from URL params
+  const [code, setCode] = useState(""); //State to hold the code
+  const { id } = useParams(); //Extract project ID from URL params
   const [output, setOutput] = useState("");
   const [error, setError] = useState(false);
-
   const [data, setData] = useState(null);
+  const [memoryUsage, setMemoryUsage] = useState(null);
 
-  console.log("data:",data)
+
 
 
   // Fetch project data on mount
   useEffect(() => {
-    fetch(`${api_base_url}/projects/getproject`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/projects/getproject`, {
       mode: 'cors',
       method: 'POST',
       headers: {
@@ -31,8 +30,14 @@ const Editor = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+
+        if (!data.success && data.msg.includes("Rate limit exceeded")) {
+          toast.error("API rate limit reached. Try again later.");
+          return;
+        }
+
         if (data.success) {
-          console.log("project data:",data)
+          // console.log("project data:",data)
           setCode(data.project.projectCode); // Set the fetched code
           setData(data.project);
         } else {
@@ -50,7 +55,7 @@ const Editor = () => {
     const trimmedCode = code?.toString().trim(); // Ensure code is a string and trimmed
     console.log('Saving code:', trimmedCode); // Debug log
 
-    fetch(`${api_base_url}/projects/saveproject`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/projects/saveproject`, {
       mode: 'cors',
       method: 'POST',
       headers: {
@@ -92,7 +97,10 @@ const Editor = () => {
     };
   }, [code]); // Reattach when `code` changes
 
+  // Run project function
   const runProject = () => {
+    const startTime = performance.now(); // Start time
+
     fetch("https://emkc.org/api/v2/piston/execute", {
       method: "POST",
       headers: {
@@ -103,17 +111,73 @@ const Editor = () => {
         version: data.version,
         files: [
           {
-            filename: data.projectName + data.projectLanguage === "python" ? ".py" : data.projectLanguage === "java" ? ".java" : data.projectLanguage === "javascript" ? ".js" : data.projectLanguage === "c" ? ".c" : data.projectLanguage === "cpp" ? ".cpp" : data.projectLanguage === "go" ? ".go" : "",
+            filename: data.projectName +
+              (data.projectLanguage === "python" ? ".py" :
+                data.projectLanguage === "java" ? ".java" :
+                  data.projectLanguage === "javascript" ? ".js" :
+                    data.projectLanguage === "c" ? ".c" :
+                      data.projectLanguage === "cpp" ? ".cpp" :
+                        data.projectLanguage === "go" ? ".go" : ""),
             content: code
           }
         ]
       })
-    }).then(res => res.json()).then(data => {
-      console.log(data)
-      setOutput(data.run.output);
-      setError(data.run.code === 1 ? true : false);
     })
-  }
+      .then(res => res.json())
+      .then(data => {
+        const endTime = performance.now(); // End time
+        const executionTime = (endTime - startTime).toFixed(2); // Calculate time in milliseconds
+
+        console.log(`Execution Time: ${executionTime} ms`);
+        setOutput(`Execution Time: ${executionTime} ms\n\n${data.run.output}`);
+        setError(data.run.code === 1 ? true : false);
+        setMemoryUsage(data.run.memory);
+        console.log(
+          `Memory Usage: ${JSON.stringify(data.run)} KB`
+        )
+      })
+
+      .catch(err => {
+        console.error("Error executing code:", err);
+        setOutput("Error executing code.");
+      });
+  };
+
+  useEffect(() => {
+    let idleTimer;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        console.log("Tab is hidden!");
+        toast.warning("You just switched the tabs!");
+      }
+    };
+
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        console.log("User is idle!");
+        toast.warning("You have been idle for too long!");
+      }, 5 * 60 * 1000); // 5 minutes
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("mousemove", resetIdleTimer);
+    window.addEventListener("keydown", resetIdleTimer);
+    window.addEventListener("scroll", resetIdleTimer);
+
+    resetIdleTimer(); // Start idle timer
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("mousemove", resetIdleTimer);
+      window.removeEventListener("keydown", resetIdleTimer);
+      window.removeEventListener("scroll", resetIdleTimer);
+      clearTimeout(idleTimer);
+    };
+  }, []);
+
+
 
 
 
@@ -145,7 +209,11 @@ const Editor = () => {
             </button>
 
           </div>
-            <pre className={`w-full h-[75vh] ${error ? "text-red-500" : ""}`} style={{textWrap: "nowrap"}}>{output}</pre>
+          <pre className={`w-full h-[75vh] ${error ? "text-red-500" : ""}`} style={{ textWrap: "nowrap" }}>{output}</pre>
+
+          {memoryUsage !== null && (
+            <p className="text-gray-400">🖥 Memory Usage: {memoryUsage} KB</p>
+          )}
         </div>
       </div>
     </>

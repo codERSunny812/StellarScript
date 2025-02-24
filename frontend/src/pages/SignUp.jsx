@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logo from "../images/logos/StellarScript.png";
 import { Link, useNavigate } from "react-router-dom";
-import { api_base_url } from "../helper";
+import { import.meta.env.VITE_API_BASE_URL } from "../helper";
 import { toast } from "react-toastify";
 
 const SignUp = () => {
@@ -15,7 +15,7 @@ const SignUp = () => {
     e.preventDefault();
 
     const signupPromise = new Promise((resolve, reject) => {
-      fetch(api_base_url + "/users/signup", {
+      fetch(import.meta.env.VITE_API_BASE_URL + "/users/signup", {
         mode: "cors",
         method: "POST",
         headers: {

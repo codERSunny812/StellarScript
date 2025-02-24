@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {body} = require('express-validator')
 const { createProject, getProjects, getProject, editProject, deleteProject, saveProject } = require('../controller/project.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
 
 router.get('/',(req,res)=>{
@@ -10,18 +11,15 @@ router.get('/',(req,res)=>{
 );
 
 
-router.post('/create',[
+router.post('/create',authMiddleware,[
     body('name').not().isEmpty().withMessage('Project name is required'),
-    // body('description').not().isEmpty().withMessage('Project description is required'),
     body('language').not().isEmpty().withMessage('Project language is required'),
-    // body('code').not().isEmpty().withMessage('Project code is required'),
-    body('token').not().isEmpty().withMessage('Token is required')
 ],createProject);
-router.post('/saveproject',saveProject)
-router.post('/getprojects',getProjects)
-router.post('/getproject',getProject)
-router.post('/updateproject',editProject)
-router.post('/deleteproject',deleteProject)
+router.post('/saveproject',authMiddleware,saveProject)
+router.post('/getprojects',authMiddleware,getProjects)
+router.post('/getproject',authMiddleware,getProject)
+router.post('/updateproject',authMiddleware,editProject)
+router.post('/deleteproject',authMiddleware,deleteProject)
 
 
 
