@@ -97,7 +97,7 @@ const Editor = () => {
     };
   }, [code]); // Reattach when `code` changes
 
-  // Run project function
+  // // Run project function
   const runProject = () => {
     const startTime = performance.now(); // Start time
 
@@ -142,6 +142,45 @@ const Editor = () => {
         setOutput("Error executing code.");
       });
   };
+
+
+  // const runProject = () => {
+  //   const startTime = performance.now();
+
+  //   fetch(import.meta.env.VITE_API_BASE_URL + "/projects/execute", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       language: data.projectLanguage,
+  //       version: data.version,
+  //       projectName: data.projectName,
+  //       code: code,
+  //     })
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       const endTime = performance.now();
+  //       const executionTime = (endTime - startTime).toFixed(2);
+
+  //       console.log(`Execution Time: ${executionTime} ms`);
+  //       setOutput(`Execution Time: ${executionTime} ms\n\n${data.output}`);
+  //       setError(data.isPlagiarized);
+  //       setMemoryUsage(data.memoryUsage);
+
+  //       console.log(`Memory Usage: ${data.memoryUsage} KB`);
+
+  //       if (data.isPlagiarized) {
+  //         toast.warn("⚠️ Warning: Plagiarism detected!");
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.error("Error executing code:", err);
+  //       setOutput("Error executing code.");
+  //     });
+  // };
+
 
   useEffect(() => {
     let idleTimer;
