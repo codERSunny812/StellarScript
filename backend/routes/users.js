@@ -10,13 +10,13 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.post('/signup',authMiddleware,
+router.post('/signup',
   body('email').isEmail().withMessage('Invalid Email'),
   body('password').isLength({ min: 5 }).withMessage('Password must be atleast 5 characters long'),
   body('fullName').isLength({ min: 3 }).withMessage('Full Name must be atleast 3 characters long'),
   signUp)
 
-router.post('/login',authMiddleware,
+router.post('/login',
   body('email').isEmail().withMessage('Invalid Email'),
   body('password').isLength({ min: 5 }).withMessage('Password must be atleast 5 characters long'),
 login)

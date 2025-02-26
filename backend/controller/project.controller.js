@@ -78,7 +78,7 @@ module.exports.createProject = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            sucess: false,
+            success: false,
             msg: error.message})   
     }
 }
@@ -97,8 +97,7 @@ try {
         })
     }
 
-    let project = await projectModel.findById
-    (projectId);
+    let project = await projectModel.findById(projectId);
 
     if (!project) {
         return res.status(404).json({ success: false, msg: "Project not found" });
@@ -119,7 +118,7 @@ try {
     })
 } catch (error) {
     return res.status(500).json({
-        sucess: false,
+        success: false,
         msg: error.message
     })
 }
@@ -197,7 +196,7 @@ module.exports.getProject = async (req, res) => {
 exports.deleteProject = async (req, res) => {
     try {
 
-        let { token, projectId } = req.body;
+        let {projectId } = req.body;
         const user = req.user;
 
         if (!user) {

@@ -9,11 +9,6 @@ const executionLogSchema = new mongoose.Schema({
         ref: 'projectModel',
         required: true
     },
-    submission: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'submission',
-        required: true
-    },
     executionTime: {
         type: Number, // Time taken in milliseconds
         required: true
@@ -21,19 +16,14 @@ const executionLogSchema = new mongoose.Schema({
     memoryUsage: {
         type: Number // Memory used in MB
     },
-    output: {
-        type: String
-    },
-    error: {
-        type: String
-    },
     executedAt: {
         type: Date,
         default: Date.now
     },
     ipAddress: {
         type: String
-    }
+    },
+    isFlagged: { type: Boolean, default: false }, // Fraud detection flag
 });
 
 const executionLogModel = mongoose.model('executionLog', executionLogSchema);

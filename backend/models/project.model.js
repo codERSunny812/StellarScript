@@ -8,7 +8,6 @@ const projectSchema = new mongoose.Schema({
     },
     projectDescription: {
         type: String,
-        // required: true
     },
     projectLanguage: {
         type: String,
@@ -17,12 +16,10 @@ const projectSchema = new mongoose.Schema({
     },
     projectCode: {
         type: String,
-        // required: true
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-
     },
     projectDate: {
         type: Date,

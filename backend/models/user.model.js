@@ -19,7 +19,10 @@ const userSchema = new mongoose.Schema({
     date:{
         type: Date,
         default: Date.now
-
+    },
+    ipAddress:{
+        type: String,
+        
     }
 })
 

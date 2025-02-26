@@ -25,14 +25,12 @@ const submissionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    codeHash: {
-        type: String,
-        required: true
+    output: {
+        type: String
     },
-    plagiarismFlag: {
-        type: Boolean,
-        default: false
-    }
+    executionTime: {
+        type: Number
+    },
 });
 
 // ✅ Hash the code before saving to detect plagiarism

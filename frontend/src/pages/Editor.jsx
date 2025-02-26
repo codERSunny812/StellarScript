@@ -196,6 +196,7 @@ const Editor = () => {
             width="100%"
             language="python"
             value={code} // Bind editor to state
+            acceptSuggestionOnEnter="on"
           />
         </div>
         <div className="right p-[15px] w-[50%] h-full bg-[#27272a]">
